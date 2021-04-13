@@ -1,14 +1,16 @@
 import {useFetch} from "../../hooks/hooks";
 import style from './IssueDashboardPage.module.scss'
+import { useHistory } from 'react-router-dom'
+import React from "react";
 
 const IssueDashboardPage = () => {
+    let history = useHistory();
+
     const [data, loading] = useFetch(
         "http://localhost:8000/issues"
     );
 
     const removeIssue = (event) => {
-        console.log(event.target.getAttribute('issue-id'))
-
         fetch('http://localhost:8000/removeIssue', {
             method: 'POST',
             headers: {
@@ -18,6 +20,22 @@ const IssueDashboardPage = () => {
         })
 
         window.location.reload(false);
+    }
+
+    const editIssue = (event) => {
+        let issueId = event.target.getAttribute('issue-id');
+        let title = event.target.getAttribute('issue-title');
+        let description = event.target.getAttribute('issue-description');
+        let statusTag = event.target.getAttribute('issue-status-tag');
+        let statusEn = event.target.getAttribute('issue-status-en');
+
+        history.push('/create', {
+            'id': issueId,
+            'title': title,
+            'description': description,
+            'statusTag': statusTag,
+            'statusEn': statusEn
+        });
     }
 
     return (
@@ -33,7 +51,7 @@ const IssueDashboardPage = () => {
                         <h2>Options</h2>
                     </div>
                     {/*TODO move to a separated component*/}
-                    {data.issues.map(({id, title, description, status_en}) => (
+                    {data.issues.map(({id, title, description, status_en, status_tag}) => (
                         <div
                             key={id}
                             className={style.record}
@@ -42,8 +60,24 @@ const IssueDashboardPage = () => {
                             <div>{description}</div>
                             <div>{status_en}</div>
                             <div className = {style.container}>
-                                <button className={style.stn_button}>Edit</button>
-                                <button issue-id={id} className={style.stn_button} onClick={removeIssue}>Delete</button>
+                                <button
+                                    issue-id={id}
+                                    issue-title={title}
+                                    issue-description={description}
+                                    issue-status-tag={status_tag}
+                                    issue-status-en={status_en}
+                                    className={style.stn_button}
+                                    onClick={editIssue}
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    issue-id={id}
+                                    className={style.stn_button}
+                                    onClick={removeIssue}
+                                >
+                                    Delete
+                                </button>
                             </div>
                         </div>
                     ))}

@@ -7,7 +7,7 @@ function useFetch(url) {
     async function fetchUrl() {
         const response = await fetch(url);
         const json = await response.json();
-        console.log(response)
+
         setData(json);
         setLoading(false);
     }

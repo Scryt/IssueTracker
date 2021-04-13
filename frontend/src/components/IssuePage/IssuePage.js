@@ -1,18 +1,30 @@
 import {useState} from "react";
 import {useFetch} from "../../hooks/hooks";
-// import style from './IssuePage.module.scss'
+import {useHistory} from 'react-router-dom'
 
-const IssuePage = () => {
+const IssuePage = (props) => {
+    const history = useHistory();
+
     const [data, loading] = useFetch(
         "http://localhost:8000/statuses"
     );
 
-    let [inputs, setInputs] = useState({
+    let issueObject = {
         title: '',
         description: '',
-        status: 'OPEN'
-    });
+        statusTag: 'OPEN'
+    };
 
+    if (history.location.state) {
+        issueObject = {
+            id: history.location.state.id,
+            title: history.location.state.title,
+            description: history.location.state.description,
+            statusTag: history.location.state.statusTag
+        }
+    }
+
+    let [inputs, setInputs] = useState(issueObject);
     const handleInputChange = (event) => {
         event.persist();
         setInputs(inputs => ({...inputs, [event.target.name]: event.target.value}));
@@ -22,20 +34,30 @@ const IssuePage = () => {
         if (event) {
             event.preventDefault();
         }
-
-        fetch('http://localhost:8000/addIssue', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(inputs)
-        })
+        if (inputs.id) {
+            fetch('http://localhost:8000/updateIssue', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(inputs)
+            })
+        } else {
+            fetch('http://localhost:8000/addIssue', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(inputs)
+            })
+        }
 
         setInputs(inputs => ({
             title: '',
             description: '',
-            status: 'OPEN'
+            statusTag: 'OPEN'
         }));
+        history.push('/')
     };
 
     return (
@@ -60,18 +82,28 @@ const IssuePage = () => {
                     "Loading..."
                 ) : (
                     <select
-                        name="status"
-                        value={inputs.status}
+                        name="statusTag"
+                        value={inputs.statusTag}
                         onChange={handleInputChange}
                     >
-                        {data.issues.map(({id, tag, status_en}) => (
-                            <option
-                                key={id}
-                                value={tag}
-                            >
-                                {status_en}
-                            </option>
-                        ))}
+                        {data.issues.map(({id, tag, status_en}) => {
+                            console.log(tag)
+                            console.log(`${inputs.statusTag}`)
+                            if(inputs.statusTag !== "PENDING" && inputs.statusTag !== "OPEN") {
+
+                            } else if (inputs.statusTag === "CLOSED") {
+
+                            }
+
+                            return (
+                                <option
+                                    key={id}
+                                    value={tag}
+                                >
+                                    {status_en}
+                                </option>
+                            )
+                        })}
                     </select>
                 )}
                 <button className="form-field" type="submit">

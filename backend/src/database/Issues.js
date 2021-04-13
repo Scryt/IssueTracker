@@ -10,7 +10,8 @@ getIssues = async (id, status_tag) => {
                title,
                description,
                S.tag,
-               D.en AS status_en
+               D.en  AS status_en,
+               S.tag AS status_tag
         FROM Issue AS I
                  LEFT JOIN Status S on S.id = I.status_id
                  LEFT JOIN Dictionary D on S.dictionary_id = D.id
@@ -19,7 +20,6 @@ getIssues = async (id, status_tag) => {
     //TODO where added to query based on parameters
     //TODO#2 building where query moved to different function as this part will/can be reusable
     //TODO#3 default show all except  removed
-    //
     // let whereQuery = "";
     // let whereParams = "";
     //
@@ -66,9 +66,29 @@ removeIssue = async (id) => {
     return runInsUpQuery(query, params)
 }
 
+updateIssue = async (id, title, description, status_tag) => {
+    console.log(id, title, description, status_tag)
+    const params = {
+        "$id": id,
+        "$title": title,
+        "$description": description,
+        "$status_tag": status_tag
+    }
+
+    const query = `UPDATE Issue
+                   SET title       = $title,
+                       description = $description,
+                       status_id   = (SELECT id FROM Status WHERE tag = $status_tag)
+                   WHERE id = $id`
+
+    return runInsUpQuery(query, params)
+}
+
 module.exports = {
     getIssues,
-    addIssue
+    addIssue,
+    removeIssue,
+    updateIssue
 }
 
 

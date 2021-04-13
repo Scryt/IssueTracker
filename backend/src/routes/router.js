@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {getIssues, addIssue} = require('../database/Issues')
+const {getIssues, addIssue, removeIssue, updateIssue} = require('../database/Issues')
 const {getStatuses} = require('../database/Statuses')
 
 const bodyParser = require('body-parser')
@@ -19,16 +19,15 @@ router.get('/statuses', (req, res) => {
 })
 
 router.post('/addIssue', jsonParser, (req, res) => {
-    addIssue(req.body.title, req.body.description, req.body.status)
+    addIssue(req.body.title, req.body.description, req.body.status).then(r => console.log(r))
 })
 
 router.post('/removeIssue', jsonParser, (req, res) => {
-    console.log(req.body.id)
-    removeIssue(req.body.id)
+    removeIssue(req.body.id).then(r => console.log(r))
 })
 
 router.post('/updateIssue', jsonParser, (req, res) => {
-    console.log(res)
+    updateIssue(req.body.id, req.body.title, req.body.description, req.body.status).then(r => console.log(r))
 })
 
 module.exports = router;
