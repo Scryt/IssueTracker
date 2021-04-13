@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const config = require('./src/config/config');
 const router = require('./src/routes/router');
+
 const app = express();
 
 //TODO cors Options to be defined for Dev/Prod

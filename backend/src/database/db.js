@@ -19,23 +19,29 @@ dbCloseConnection = (db) => {
     });
 }
 
-runInsertQuery = (query) => {
-    const db = dbOpenConnection()
+runInsertQuery = (query, params) => {
+    const db = dbOpenConnection();
 
     db.serialize(() => {
-        db.run("PRAGMA foreign_keys = ON;")
-            .run("BEGIN TRANSACTION;");
+        db.run("BEGIN TRANSACTION;");
 
-        let queryArr = query.toString().split(");");
+        if (params !== undefined) {
+            db.run(query, params, (err) => {
+                if (err) throw err;
+            });
+        } else {
+            const queryArr = query.toString().split(");");
+            queryArr.forEach(singleQuery => {
+                if (singleQuery === "") {
+                    return;
+                }
 
-        queryArr.forEach(query => {
-            if (query) {
-                query += ");";
-                db.run(query, err => {
+                singleQuery += ");";
+                db.run(singleQuery, err => {
                     if (err) throw err;
                 });
-            }
-        });
+            });
+        }
 
         db.run("COMMIT;");
     });
