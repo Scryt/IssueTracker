@@ -22,6 +22,11 @@ router.post('/addIssue', jsonParser, (req, res) => {
     addIssue(req.body.title, req.body.description, req.body.status)
 })
 
+router.post('/removeIssue', jsonParser, (req, res) => {
+    console.log(req.body.id)
+    removeIssue(req.body.id)
+})
+
 router.post('/updateIssue', jsonParser, (req, res) => {
     console.log(res)
 })
