@@ -1,6 +1,5 @@
-import {useState, useHistory} from "react";
+import {useState} from "react";
 import {useFetch} from "../../hooks/hooks";
-import style from "../IssueDashboardPage/IssueDashboardPage.module.scss";
 // import style from './IssuePage.module.scss'
 
 const IssuePage = () => {
@@ -8,7 +7,7 @@ const IssuePage = () => {
         "http://localhost:8000/statuses"
     );
 
-    const [inputs, setInputs] = useState({
+    let [inputs, setInputs] = useState({
         title: '',
         description: '',
         status: 'OPEN'
@@ -20,7 +19,6 @@ const IssuePage = () => {
     };
 
     const handleSubmit = (event) => {
-        const history = useHistory()
         if (event) {
             event.preventDefault();
         }
@@ -33,7 +31,11 @@ const IssuePage = () => {
             body: JSON.stringify(inputs)
         })
 
-        history.push("/");
+        setInputs(inputs => ({
+            title: '',
+            description: '',
+            status: 'OPEN'
+        }));
     };
 
     return (
