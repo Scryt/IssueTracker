@@ -29,9 +29,11 @@ CREATE TABLE IF NOT EXISTS Issue
 INSERT OR IGNORE INTO Dictionary (tag, en)
 VALUES ('STATUS_OPEN', 'Open'),
        ('STATUS_CLOSED', 'Closed'),
-       ('STATUS_PENDING', 'Pending');
+       ('STATUS_PENDING', 'Pending'),
+       ('STATUS_REMOVED', 'Removed');
 
 INSERT OR IGNORE INTO Status (tag, dictionary_id)
 VALUES ('OPEN', (SELECT id FROM Dictionary WHERE tag = 'STATUS_OPEN')),
        ('CLOSED', (SELECT id FROM Dictionary WHERE tag = 'STATUS_CLOSED')),
-       ('PENDING', (SELECT id FROM Dictionary WHERE tag = 'STATUS_PENDING'));
+       ('PENDING', (SELECT id FROM Dictionary WHERE tag = 'STATUS_PENDING')),
+       ('REMOVED', (SELECT id FROM Dictionary WHERE tag = 'STATUS_REMOVED')),;
