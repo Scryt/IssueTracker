@@ -19,7 +19,7 @@ dbCloseConnection = (db) => {
     });
 }
 
-runInsertQuery = (query, params) => {
+runInsUpQuery = (query, params) => {
     const db = dbOpenConnection();
 
     db.serialize(() => {
@@ -65,6 +65,6 @@ runSelectQuery = async (query) => {
 }
 
 module.exports = {
-    runInsertQuery,
+    runInsUpQuery,
     runSelectQuery
 }

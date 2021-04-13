@@ -1,4 +1,4 @@
-const {runSelectQuery, runInsertQuery} = require('./db')
+const {runSelectQuery, runInsUpQuery} = require('./db')
 
 getIssues = async (id, status_tag) => {
     //TODO data check
@@ -44,17 +44,25 @@ getIssues = async (id, status_tag) => {
 addIssue = async (title, description, status_tag) => {
     status_tag = status_tag || "OPEN";
 
-    let params = {
+    const params = {
         "$title": title,
         "$description": description,
         "$status_tag": status_tag
     }
 
-    // let params = [title, description, status_tag];
-    let query = `INSERT INTO Issue (title, description, status_id)
-                 VALUES ($title, $description, (SELECT id FROM Status WHERE tag = $status_tag));`;
+    const query = `INSERT INTO Issue (title, description, status_id)
+                   VALUES ($title, $description, (SELECT id FROM Status WHERE tag = $status_tag));`;
 
-    return runInsertQuery(query, params)
+    return runInsUpQuery(query, params)
+}
+
+removeIssue = async (id) => {
+    const params = {"id": id}
+    const query = `UPDATE Issue
+                   SET status_id = (SELECT id FROM Status WHERE tag = "REMOVED")
+                   WHERE id = $id`
+
+    return runInsUpQuery(query, params)
 }
 
 module.exports = {

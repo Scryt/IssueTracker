@@ -1,4 +1,4 @@
-const {runSelectQuery, runInsertQuery} = require('./db')
+const {runSelectQuery} = require('./db')
 
 getStatuses = async (status_tag) => {
     let query = `
