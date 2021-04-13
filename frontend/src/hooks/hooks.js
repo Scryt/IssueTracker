@@ -13,7 +13,7 @@ function useFetch(url) {
     }
 
     useEffect(() => {
-        fetchUrl();
+        fetchUrl().then(r => console.log(r));
     }, []);
     return [data, loading];
 }

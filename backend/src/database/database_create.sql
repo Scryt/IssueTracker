@@ -36,4 +36,4 @@ INSERT OR IGNORE INTO Status (tag, dictionary_id)
 VALUES ('OPEN', (SELECT id FROM Dictionary WHERE tag = 'STATUS_OPEN')),
        ('CLOSED', (SELECT id FROM Dictionary WHERE tag = 'STATUS_CLOSED')),
        ('PENDING', (SELECT id FROM Dictionary WHERE tag = 'STATUS_PENDING')),
-       ('REMOVED', (SELECT id FROM Dictionary WHERE tag = 'STATUS_REMOVED')),;
+       ('REMOVED', (SELECT id FROM Dictionary WHERE tag = 'STATUS_REMOVED'));
