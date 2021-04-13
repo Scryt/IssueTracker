@@ -6,6 +6,20 @@ const IssueDashboardPage = () => {
         "http://localhost:8000/issues"
     );
 
+    const removeIssue = (event) => {
+        console.log(event.target.getAttribute('issue-id'))
+
+        fetch('http://localhost:8000/removeIssue', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"id": event.target.getAttribute('issue-id')})
+        })
+
+        window.location.reload(false);
+    }
+
     return (
         <div>
             {loading ? (
@@ -29,7 +43,7 @@ const IssueDashboardPage = () => {
                             <div>{status_en}</div>
                             <div className = {style.container}>
                                 <button className={style.stn_button}>Edit</button>
-                                <button className={style.stn_button}>Delete</button>
+                                <button issue-id={id} className={style.stn_button} onClick={removeIssue}>Delete</button>
                             </div>
                         </div>
                     ))}
