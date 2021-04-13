@@ -13,7 +13,8 @@ getIssues = async (id, status_tag) => {
                D.en AS status_en
         FROM Issue AS I
                  LEFT JOIN Status S on S.id = I.status_id
-                 LEFT JOIN Dictionary D on S.dictionary_id = D.id;
+                 LEFT JOIN Dictionary D on S.dictionary_id = D.id
+        WHERE S.tag IS NOT "REMOVED";
     `
     //TODO where added to query based on parameters
     //TODO#2 building where query moved to different function as this part will/can be reusable
@@ -57,11 +58,11 @@ addIssue = async (title, description, status_tag) => {
 }
 
 removeIssue = async (id) => {
-    const params = {"id": id}
+    const params = {"$id": id}
     const query = `UPDATE Issue
                    SET status_id = (SELECT id FROM Status WHERE tag = "REMOVED")
                    WHERE id = $id`
-
+    console.log(query)
     return runInsUpQuery(query, params)
 }
 
