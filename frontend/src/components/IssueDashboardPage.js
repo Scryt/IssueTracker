@@ -1,7 +1,7 @@
-const ExpanseDashboardPage = () => (
+const IssueDashboardPage = () => (
     <div>
-        <p> some test </p>
+        <p> Issue Dashboard Page </p>
     </div>
 );
 
-export default ExpanseDashboardPage
+export default IssueDashboardPage
