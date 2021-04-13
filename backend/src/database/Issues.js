@@ -1,6 +1,7 @@
 const {runSelectQuery, runInsertQuery} = require('./db')
 
 getIssues = async (id, status_tag) => {
+    //TODO data check
     // if (typeof id !== "number") {
     //     throw(`ID need to be an int but got ${typeof id}` )
     // }
@@ -16,6 +17,7 @@ getIssues = async (id, status_tag) => {
     `
     //TODO where added to query based on parameters
     //TODO#2 building where query moved to different function as this part will/can be reusable
+    //TODO#3 default show all except  removed
     //
     // let whereQuery = "";
     // let whereParams = "";
@@ -28,22 +30,21 @@ getIssues = async (id, status_tag) => {
     //
     // }
 
-    const results = await runSelectQuery(query)
-    let resultsObject = {};
-
+    const results = await runSelectQuery(query);
+    let resultsObject = {}
+    let tArray = []
     results.forEach(record => {
-        let recordId = record["id"];
-        delete record["id"];
-        resultsObject[recordId] = record;
+        tArray.push(record)
     })
 
+    resultsObject["issues"] = tArray;
     return JSON.stringify(resultsObject);
 };
 
 addIssue = async (title, description, status_tag) => {
     status_tag = status_tag || "OPEN";
 
-    let params =  {
+    let params = {
         "$title": title,
         "$description": description,
         "$status_tag": status_tag
