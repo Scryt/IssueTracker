@@ -1,0 +1,42 @@
+.row,
+.record {
+  display: grid;
+  grid-template-columns: 1fr 2fr 100px 150px;
+
+  padding: 5px;
+
+  border-bottom: 1px solid #bababa;
+}
+
+.row {
+  border-bottom: 1px solid #1f1f1f;
+}
+
+.record p {
+  display: flex;
+  align-items: center;
+
+  height: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  font-size: 15px;
+}
+
+
+.container:nth-child(n) {
+  padding: 5px;
+}
+
+.stn_button {
+  width: 55px;
+
+  padding: 2px;
+  margin: 5px;
+
+  font-size: 15px;
+
+  border: 1px solid #1f1f1f;
+  border-radius: 10%;
+}
