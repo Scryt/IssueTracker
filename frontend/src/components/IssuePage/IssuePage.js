@@ -87,8 +87,7 @@ const IssuePage = (props) => {
                         onChange={handleInputChange}
                     >
                         {data.issues.map(({id, tag, status_en}) => {
-                            console.log(tag)
-                            console.log(`${inputs.statusTag}`)
+                            //TODO fix allowance of status addition
                             if(inputs.statusTag !== "PENDING" && inputs.statusTag !== "OPEN") {
 
                             } else if (inputs.statusTag === "CLOSED") {
